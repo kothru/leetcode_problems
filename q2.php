@@ -18,22 +18,16 @@ class Solution {
         $arr2 = $this->reader($l2,array());
 
         $ret = array();
-        $length = count($arr1);
-        if ($length === 1){
-            $sum = $l1->val + $l2->val;
-            if($sum>=10){
-                $lowerNode = new ListNode($sum % 10);
-                $upperNode = new ListNode(1);
-                $lowerNode->next = $upperNode;
-                return $lowerNode;
-            }else{
-                return new ListNode($sum);
-            }
-        }
+        $length1 = count($arr1);
+        $length2 = count($arr2);        
+        
+        $length = $length1 > $length2 ? $length1 : $length2;
         
         $adv = 0;
         for($i=0;$i<$length;$i++){
-            $sum = $arr1[$i] + $arr2[$i] + $adv;
+            $val1 = (isset($arr1[$i]) ? $arr1[$i] : 0);
+            $val2 = (isset($arr2[$i]) ? $arr2[$i] : 0);                
+            $sum = $val1 + $val2 + $adv;
             if ($sum>=10){
                 $mod = $sum % 10;
                 $ret[] = $mod;
@@ -48,6 +42,9 @@ class Solution {
         }
         $ret = array_reverse($ret);
         $node = new ListNode($ret[0]);
+        if (count($ret) == 1) {
+            return $node;
+        }
         return $this->writer($ret,$node,1);
     }
     
