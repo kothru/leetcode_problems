@@ -6,29 +6,33 @@ class Solution {
  */
 function lengthOfLongestSubstring($s) {
     $length = strlen($s);
-    $ret = 0;
-    for($i=0;$i<$length;$i++){
-        $len = $this->lengthOfSubstring(substr($s,$i));
-        if($len > $ret){
-            $ret = $len;
-        }   
+    if ($length <= 1) {
+        return $length;
     }
-    return $ret;
-}
-
-function lengthOfSubstring($s) {
     $arr = str_split($s);
-    $dummy = array();
-    $cnt = 0;
-    foreach($arr as $char){
-        $idx = ord($char);
-        if(isset($dummy[$idx])){
-            break;
-        }
-        $dummy[$idx] = 1;
-        $cnt += 1;
+    $cnt = count($arr);
+    $uniArr = array_unique($arr);
+    $uniCnt = count($uniArr);
+    if ($cnt == $uniCnt){
+        return $cnt;
     }
-    return $cnt;
-}
-
+    if ($uniCnt == 1) {
+        return 1;
+    }
+    
+    $ret = 0;
+    for ($i=$uniCnt;$i>1;$i--){
+        $ret = $i;
+        for ($j=0;$j<=($cnt-$i);$j++) {
+            $sub = substr($s,$j,$i);
+            $subArr = str_split($sub);
+            $subCnt = count(array_unique($subArr));
+            if ($i == $subCnt) {
+                break 2;
+            }
+        }
+    }
+    
+    return $ret;
+}   
 }
